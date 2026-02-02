@@ -1,4 +1,4 @@
-import pool from '../db.js'; 
+import pool from '../db/pool.js'; 
 
 export const findUserByUsername = async () => {
     const username = "admin_user"
