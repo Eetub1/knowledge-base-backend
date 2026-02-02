@@ -14,15 +14,15 @@ loginRouter.get("/", (req, res) => {
 
 loginRouter.get("/test-db", async (req, res) => {
     try {
-        const result = await pool.query("SELECT * FROM users LIMIT 1");
+        const result = await pool.query("SELECT * FROM users LIMIT 1")
         res.json({
             message: "Connection successful!",
             rowCount: result.rowCount,
-            firstUser: result.rows[0] // This should show 'testuser' if you added him!
-        });
+            firstUser: result.rows[0]
+        })
     } catch (err) {
-        res.status(500).json({ error: err.message});
+        res.status(500).json({ error: err.message})
     }
-});
+})
 
 export default loginRouter
