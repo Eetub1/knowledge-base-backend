@@ -1,28 +1,43 @@
 import { Router } from "express"
 import pool from "../db/pool.js"
+import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken"
+
+import { findUserByUsername } from "../db/queries.js"
+
 const loginRouter = Router()
 
-loginRouter.post("/", (req, res) => {
-    console.log("MOI")
-    res.send("Viesti vastaanotettu!")
-})
+loginRouter.post("/", async (req, res) => {
+    const { username, password } = req.body
 
-loginRouter.get("/", (req, res) => {
-    console.log("moro get")
-    res.send("moi teit get pyynnön tänne")
-})
+    //tarvitaan myös passwordhash
+    const user = await findUserByUsername(username)
+    
+    const passwordCorrect = user === undefined 
+        ? false
+        : await bcrypt.compare(password, user.password_hash)
 
-loginRouter.get("/test-db", async (req, res) => {
-    try {
-        const result = await pool.query("SELECT * FROM users LIMIT 1")
-        res.json({
-            message: "Connection successful!",
-            rowCount: result.rowCount,
-            firstUser: result.rows[0]
+    if (!(user && passwordCorrect)) {
+        return res.status(401).json({
+            error: "invalid username or password"
         })
-    } catch (err) {
-        res.status(500).json({ error: err.message})
     }
+
+    const userForToken = {
+        username: user.username,
+        id: user.id
+    }
+
+    const token = jwt.sign(
+        userForToken,
+        process.env.SECRET,
+        {expiresIn: 60*120}
+    )
+    res.status(200).send({ 
+        token, 
+        username: user.username, 
+        id: user.id 
+    })
 })
 
 export default loginRouter
