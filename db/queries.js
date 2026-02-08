@@ -8,10 +8,26 @@ export const createUser = async (username, passwordHash) => {
     return result.rows[0]
 }
 
-export const findUserByUsername = async (username) => {
+export const findUserByUsername = async username => {
     const result = await pool.query(
         "SELECT * FROM users WHERE username = $1",
         [username]
     )
     return result.rows[0]
+}
+
+export const addNoteById = async (title, content, userId, folderId=null) => {
+    try {
+        const result = await pool.query(
+            //palautetaan juuri luotu rivi
+            "INSERT INTO notes (title, content, user_id, folder_id) VALUES ($1, $2, $3, $4) RETURNING *",
+            [title, content, userId, folderId]
+        )
+        console.log("Note created:", result.rows[0])
+        return result.rows[0]
+
+    } catch (err) {
+        console.error("Tapahtui virhe lisätessä muistiinpanoa:", err.message)
+        return null
+    }
 }
