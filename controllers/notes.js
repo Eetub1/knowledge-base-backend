@@ -1,7 +1,14 @@
 import { Router } from "express"
-import { addNoteById } from "../db/queries.js"
+import { addNoteById, getUserNotesById } from "../db/queries.js"
 
 const notesRouter = Router()
+
+notesRouter.get("/:id", async (req, res) => {
+    const userId = req.params.id
+
+    const result = await getUserNotesById(userId)
+    res.status(200).json(result.rows)
+})
 
 notesRouter.get("/", (req, res) => {
     res.send("Moi")

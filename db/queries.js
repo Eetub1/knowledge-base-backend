@@ -26,8 +26,19 @@ export const addNoteById = async (title, content, userId, folderId=null) => {
         console.log("Note created:", result.rows[0])
         return result.rows[0]
 
-    } catch (err) {
-        console.error("Tapahtui virhe lisätessä muistiinpanoa:", err.message)
+    } catch (error) {
+        console.error("Tapahtui virhe lisätessä muistiinpanoa:", error.message)
         return null
+    }
+}
+
+export const getUserNotesById = async userId => {
+    try {
+        const result = await pool.query(
+            "SELECT * FROM notes WHERE user_id = $1 ORDER BY created_at DESC",
+            [userId]
+        )
+    } catch (error) {
+        console.error("Tapahtui virhe haettaessa käyttäjän muistiinpanoja")
     }
 }
