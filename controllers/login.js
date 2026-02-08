@@ -10,7 +10,6 @@ const loginRouter = Router()
 loginRouter.post("/", async (req, res) => {
     const { username, password } = req.body
 
-    //tarvitaan myös passwordhash
     const user = await findUserByUsername(username)
     
     const passwordCorrect = user === undefined 
