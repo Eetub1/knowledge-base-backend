@@ -56,5 +56,13 @@ export const createFolderByUserId = async (title, userId) => {
 }
 
 export const getFoldersByUserId = async userId => {
-    //TODOOOO
+    try {
+        const result = await pool.query(
+            "SELECT * FROM folders WHERE user_id = $1",
+            [userId]
+        )
+        return result.rows
+    } catch {
+        console.error("Virhe kun haetaan käyttäjän foldereita")
+    }
 }
