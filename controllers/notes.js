@@ -10,6 +10,7 @@ notesRouter.get("/:userId", async (req, res) => {
     res.status(200).json(result)
 })
 
+//testi
 notesRouter.get("/", (req, res) => {
     res.send("Moi")
 })

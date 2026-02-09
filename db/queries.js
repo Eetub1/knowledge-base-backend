@@ -23,7 +23,6 @@ export const addNoteById = async (title, content, userId, folderId=null) => {
             "INSERT INTO notes (title, content, user_id, folder_id) VALUES ($1, $2, $3, $4) RETURNING *",
             [title, content, userId, folderId]
         )
-        console.log("Note created:", result.rows[0])
         return result.rows[0]
 
     } catch (error) {
@@ -38,10 +37,20 @@ export const getUserNotesById = async userId => {
             "SELECT * FROM notes WHERE user_id = $1 ORDER BY created_at DESC",
             [userId]
         )
-        console.log(result)
-        console.log(result.rows)
         return result.rows
     } catch (error) {
         console.error("Tapahtui virhe haettaessa käyttäjän muistiinpanoja")
+    }
+}
+
+export const createFolderByUserId = async (title, userId) => {
+    try {
+        const result = await pool.query(
+            "INSERT INTO folders (name, user_id) VALUES ($1, $2) RETURNING *",
+            [title, userId]
+        )
+        return result.rows[0]
+    } catch {
+        console.error("Tapahtui virhe luotaessa folderia")
     }
 }
