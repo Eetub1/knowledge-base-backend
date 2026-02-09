@@ -54,3 +54,7 @@ export const createFolderByUserId = async (title, userId) => {
         console.error("Tapahtui virhe luotaessa folderia")
     }
 }
+
+export const getFoldersByUserId = async userId => {
+    //TODOOOO
+}
