@@ -3,11 +3,11 @@ import { addNoteById, getUserNotesById } from "../db/queries.js"
 
 const notesRouter = Router()
 
-notesRouter.get("/:id", async (req, res) => {
-    const userId = req.params.id
+notesRouter.get("/:userId", async (req, res) => {
+    const userId = req.params.userId
 
     const result = await getUserNotesById(userId)
-    res.status(200).json(result.rows)
+    res.status(200).json(result)
 })
 
 notesRouter.get("/", (req, res) => {

@@ -38,6 +38,9 @@ export const getUserNotesById = async userId => {
             "SELECT * FROM notes WHERE user_id = $1 ORDER BY created_at DESC",
             [userId]
         )
+        console.log(result)
+        console.log(result.rows)
+        return result.rows
     } catch (error) {
         console.error("Tapahtui virhe haettaessa käyttäjän muistiinpanoja")
     }
