@@ -4,6 +4,7 @@ import bcrypt from "bcrypt"
 
 const usersRouter = Router()
 
+//tässä luodaan uusi käyttäjä
 usersRouter.post("/", async (req, res) => {
     const {username, password} = req.body
 

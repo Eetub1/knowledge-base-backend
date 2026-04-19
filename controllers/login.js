@@ -1,5 +1,4 @@
 import { Router } from "express"
-import pool from "../db/pool.js"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 
@@ -32,6 +31,7 @@ loginRouter.post("/", async (req, res) => {
         process.env.SECRET,
         {expiresIn: 60*120}
     )
+    
     res.status(200).send({ 
         token, 
         username: user.username, 
